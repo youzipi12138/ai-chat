@@ -68,7 +68,6 @@
 import { reactive, ref, watch } from 'vue'
 import { delFolder, postFolder } from '@/api/folder'
 import { MsgSuccess, MsgConfirm } from '@/utils/message'
-import { title } from 'process'
 defineOptions({
   name: 'FoldTree',
 })

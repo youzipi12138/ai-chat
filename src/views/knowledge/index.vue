@@ -2,11 +2,11 @@
   <div>
     <div class="sidenav w-[240px] bg-[#f5f6f7] h-full border-r-[#dcdfe6] border-r-1">
       <div class="text-[16px] font-bold pl-4 pt-4">知识库</div>
-      <folderTree
+      <FoldTree
         :tree-data="treeData"
         :source-type="Source.KNOWLEDGE"
         @refresh="getTreeData"
-      ></folderTree>
+      ></FoldTree>
     </div>
     <div class="logout flex-1"></div>
   </div>
@@ -14,9 +14,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import useStore from '@/stores'
-import folderTree from '@/component/flolder-tree/index.vue'
+import FoldTree from '@/component/FoldTree.vue'
 import { Source } from '@/enmus/common'
 defineOptions({
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'knowledge',
 })
 interface Tree {
