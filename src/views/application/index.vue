@@ -2,7 +2,11 @@
   <div>
     <div class="sidenav w-[240px] bg-[#f5f6f7] h-full border-r-[#dcdfe6] border-r-1">
       <div class="text-[16px] font-bold pl-4 pt-4">应用</div>
-      <folderTree :tree-data="treeData"></folderTree>
+      <folderTree
+        :tree-data="treeData"
+        :source-type="Source.APPLICATION"
+        @refresh="getTreeData"
+      ></folderTree>
     </div>
     <div class="logout flex-1"></div>
   </div>
@@ -11,6 +15,7 @@
 import { onMounted, ref } from 'vue'
 import useStore from '@/stores'
 import folderTree from '@/component/flolder-tree/index.vue'
+import { Source } from '@/enmus/common'
 defineOptions({
   name: 'Application',
 })
@@ -21,9 +26,15 @@ interface Tree {
 }
 const treeData = ref<Tree[]>()
 const loading = ref(false)
-onMounted(async () => {
+
+const getTreeData = async () => {
   const { folder } = useStore()
-  const { data } = (await folder.asyncGetFolder('KNOWLEDGE', {}, loading)) as { data: Tree[] }
+  const { data } = (await folder.asyncGetFolder(Source.APPLICATION, {}, loading)) as {
+    data: Tree[]
+  }
   treeData.value = data as Tree[]
+}
+onMounted(() => {
+  getTreeData()
 })
 </script>

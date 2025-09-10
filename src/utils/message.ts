@@ -49,12 +49,12 @@ export const MsgError = (message: string) => {
  * @param 参数 message: {title, description,type}
  */
 
-// export const MsgConfirm = (title: string, description: string, options?: any) => {
-//   const defaultOptions: object = {
-//     showCancelButton: true,
-//     confirmButtonText: t('common.confirm'),
-//     cancelButtonText: t('common.cancel'),
-//     ...options,
-//   }
-//   return ElMessageBox.confirm(description, title, defaultOptions)
-// }
+export const MsgConfirm = (title: string, description: string, options?: any) => {
+  const defaultOptions: object = {
+    showCancelButton: true,
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    ...options,
+  }
+  return ElMessageBox.confirm(description, title, defaultOptions)
+}

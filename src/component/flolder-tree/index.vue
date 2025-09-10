@@ -8,6 +8,7 @@
         :data="treeData"
         :props="defaultProps"
         @node-click="handleNodeClick"
+        default-expand-all="true"
         class="p-2"
       >
         <template #default="{ node, data }">
@@ -16,12 +17,12 @@
             <span class="ml-4 ellipsis" style="max-width: 110px">{{ node.label }}</span>
           </div>
           <el-dropdown trigger="click">
-            <el-button text @click.stop>
+            <el-button text @click.stop="handleDropdownClick(node)">
               <AppIcon iconName="app-more" style="font-size: 20px"></AppIcon
             ></el-button>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="onClick">
+                <el-dropdown-item @click.stop="onClick">
                   <AppIcon iconName="app-add-folder" style="font-size: 20px"></AppIcon>
                   添加子文件夹
                 </el-dropdown-item>
@@ -29,7 +30,7 @@
                   <AppIcon iconName="app-edit" style="font-size: 20px"></AppIcon>
                   编辑
                 </el-dropdown-item>
-                <el-dropdown-item
+                <el-dropdown-item @click.stop="onDelClick(node)"
                   ><AppIcon iconName="app-delete" style="font-size: 20px"></AppIcon
                   >删除</el-dropdown-item
                 >
@@ -41,7 +42,13 @@
     </el-scrollbar>
   </div>
   <el-dialog v-model="dialogVisible" title="添加文件夹" width="500" draggable>
-    <el-form label-position="top" :model="formData" require-asterisk-position="right" :rules="rule">
+    <el-form
+      ref="formRef"
+      label-position="top"
+      :model="formData"
+      require-asterisk-position="right"
+      :rules="rule"
+    >
       <el-form-item label="文件夹名称" prop="name">
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
@@ -58,20 +65,33 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
-
+import { reactive, ref, watch } from 'vue'
+import { delFolder, postFolder } from '@/api/folder'
+import { MsgSuccess, MsgConfirm } from '@/utils/message'
+import { title } from 'process'
 defineOptions({
   name: 'FoldTree',
 })
-defineProps({
+const props = defineProps({
   treeData: {
     type: Array,
     default: () => [],
   },
+  sourceType: {
+    type: String,
+    default: '',
+    required: true,
+  },
 })
-const handleNodeClick = (data: Tree) => {
-  console.log(data)
+const emit = defineEmits(['refresh'])
+interface Tree {
+  id: string
+  name: string
+  children?: Tree[]
 }
+// const handleNodeClick = (data: Tree) => {
+//   console.log(data)
+// }
 
 const defaultProps = {
   id: 'id',
@@ -79,14 +99,62 @@ const defaultProps = {
   label: 'name',
 }
 const dialogVisible = ref(false)
+const loading = ref(false)
+
+watch(dialogVisible, (newVal) => {
+  if (!newVal) {
+    formRef.value.resetFields()
+  }
+})
+
+//获取parent_id
+const parentid = ref('')
+const handleDropdownClick = (node: any) => {
+  console.log(1, node)
+  if (node.level === 1) {
+    parentid.value = 'default'
+    console.log(parentid.value)
+  } else {
+    parentid.value = node.data.id
+    console.log(parentid.value)
+  }
+}
+const formRef = ref()
+//添加文件夹
+const onConfirm = async () => {
+  await formRef.value.validate((valid: boolean) => {
+    if (valid) {
+      const params = {
+        name: formData.name,
+        desc: formData.desc,
+        parent_id: parentid.value,
+      }
+      postFolder(props.sourceType, params, loading).then(() => {
+        MsgSuccess('添加成功')
+        emit('refresh')
+        dialogVisible.value = false
+      })
+    }
+  })
+  dialogVisible.value = false
+}
+//删除文件夹
+const onDelClick = async (node: any) => {
+  MsgConfirm(`是否要删除${node.label}`, '删除之后就不可以恢复了', {
+    confirmButtonClass: 'danger',
+  }).then(() => {
+    delFolder(node.data.id, props.sourceType, loading).then(() => {
+      MsgSuccess('删除成功')
+      emit('refresh')
+    })
+  })
+}
 // const dialogOverflowVisible = ref(false)
 // const customDraggingVisible = ref(false)
 const onClick = () => {
   dialogVisible.value = true
 }
-const onConfirm = () => {
-  dialogVisible.value = false
-}
+
 const formData = reactive({
   name: '',
   desc: '',

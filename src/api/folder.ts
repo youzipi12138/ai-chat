@@ -36,3 +36,16 @@ export const postFolder: (
 ) => Promise<Result<Array<any>>> = (source, data, loading) => {
   return post(`${prefix.value}/${source}/folder`, data, null, loading)
 }
+/**
+ * 删除文件夹
+ * @params 参数
+ *  folder_id
+ *  source : APPLICATION, KNOWLEDGE, TOOL
+ */
+export const delFolder: (
+  folder_id: string,
+  source: string,
+  loading?: Ref<boolean>,
+) => Promise<Result<boolean>> = (folder_id, source, loading) => {
+  return del(`${prefix.value}/${source}/folder/${folder_id}`, undefined, {}, loading)
+}
