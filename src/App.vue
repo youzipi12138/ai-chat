@@ -1,4 +1,6 @@
 <template>
-  <div>dfasfas</div>
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
-<script lang="ts"></script>
+<script setup lang="ts"></script>
