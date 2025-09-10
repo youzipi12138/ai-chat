@@ -7,7 +7,7 @@ import App from './App.vue'
 import router from './router'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import '@/styles/var.scss'
-import AppIcon from '@/component/app-icon/icons/AppIcon.vue'
+import AppIcon from '@/components/app-icon/icons/AppIcon.vue'
 const app = createApp(App)
 
 app.use(createPinia())

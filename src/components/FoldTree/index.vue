@@ -9,6 +9,7 @@
         :props="defaultProps"
         @node-click="handleNodeClick"
         default-expand-all="true"
+        highlight-current
         class="p-2"
       >
         <template #default="{ node, data }">
@@ -178,5 +179,12 @@ const rule = reactive({
   height: 40px;
   border-radius: 6px;
   margin: 7px 0;
+  &:hover {
+    background: #1f23291a;
+  }
+}
+::v-deep(.el-tree-node.is-current > .el-tree-node__content) {
+  background-color: #ebf1ff !important; /* 改成你想要的背景色 */
+  color: #3370ff !important; /* 字体颜色 */
 }
 </style>

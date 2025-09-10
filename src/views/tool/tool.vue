@@ -14,9 +14,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import useStore from '@/stores'
-import folderTree from '@/component/flolder-tree/index.vue'
+import folderTree from '@/components/FoldTree/index.vue'
 import { Source } from '@/enmus/common'
 defineOptions({
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'tool',
 })
 interface Tree {

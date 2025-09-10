@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import useStore from '@/stores'
-import FoldTree from '@/component/FoldTree.vue'
+import FoldTree from '@/components/FoldTree/index.vue'
 import { Source } from '@/enmus/common'
 defineOptions({
   // eslint-disable-next-line vue/multi-word-component-names
