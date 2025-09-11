@@ -4,6 +4,7 @@
     <el-input prefix-icon="Search" placeholder="请输入" clearable class=""></el-input>
     <el-scrollbar>
       <el-tree
+        ref="treeRef"
         style="max-width: 600px"
         :data="treeData"
         :props="defaultProps"
@@ -97,6 +98,7 @@ interface Tree {
 //默认点击第一个节点
 // const defaultClickNode = ref<string>()
 const handleNodeClick = (data: Tree) => {
+  console.log('data', data)
   folder.setCurrentFolder(data.id)
   emit('handlerClickCurNode', data)
 }
@@ -175,6 +177,18 @@ const rule = reactive({
       trigger: 'blur',
     },
   ],
+})
+
+const treeRef = ref()
+function triggerClick(id) {
+  treeRef.value.setCurrentKey(id) // 只是高亮
+  const node = treeRef.value.getNode(id) // 拿到节点
+  if (node) {
+    handleNodeClick(node.data) // 手动调用点击事件回调
+  } // 等价于点击节点
+}
+defineExpose({
+  triggerClick,
 })
 </script>
 <style lang="scss" scoped>

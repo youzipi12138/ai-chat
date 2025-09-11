@@ -2,6 +2,7 @@
   <div v-if="props.data && props.data.length">
     <div class="grid grid-cols-3 gap-4">
       <div
+        @click="emit('clickCard', item)"
         v-for="item in props.data"
         :key="item.id"
         class="card p-5 bg-[#fff] rounded-2xl cursor-pointer"
@@ -30,5 +31,6 @@ const props = defineProps({
     default: () => [],
   },
 })
+const emit = defineEmits(['clickCard'])
 </script>
 <style scoped lang="scss"></style>

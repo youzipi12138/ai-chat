@@ -3,9 +3,13 @@
     <div v-if="folder.currentFolder === 'default'" class="text-lg font-bold">根目录</div>
     <div v-else>
       <el-breadcrumb :separator-icon="ArrowRight">
-        <el-breadcrumb-item v-for="item in breadcrumbList" :key="item.id">{{
-          item.name
-        }}</el-breadcrumb-item>
+        <el-breadcrumb-item
+          v-for="item in breadcrumbList"
+          :key="item.id"
+          @click="handleClick(item)"
+          class="cursor-pointer"
+          >{{ item.name }}</el-breadcrumb-item
+        >
       </el-breadcrumb>
     </div>
   </div>
@@ -26,6 +30,7 @@ const props = defineProps({
   },
 })
 const { folder } = useStore()
+const emit = defineEmits(['clickBreadcrumb'])
 //获取面包屑的数据
 const breadcrumbList = computed(() => {
   return getBreadcrumbList()
@@ -44,7 +49,11 @@ function getBreadcrumbList() {
   }
   return path
 }
-
+function handleClick(item) {
+  emit('clickBreadcrumb', item)
+  // folder.currentFolder = 'default'
+  // folder.setCurrentFolder(item.id)
+}
 //获取面包屑的数据
 // const { folder } = useStore()
 // const currentFolder = ref(folder.currentFolder)
