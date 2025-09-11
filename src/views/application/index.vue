@@ -6,10 +6,15 @@
         :tree-data="treeData"
         :source-type="Source.APPLICATION"
         @refresh="getTreeData"
+        @handlerClickCurNode="setNextChildrenFold"
       ></FoldTree>
     </div>
-    <div class="logout flex-1 bg-[#f5f6f7]">
-      <overview></overview>
+    <div class="logout flex-1 bg-[#f5f6f7] items-center">
+      <div class="flex h-[60px] justify-between items-center">
+        <Bread :FoldList="treeData"></Bread>
+        <TopSearch></TopSearch>
+      </div>
+      <overview :data="childrenData" class="p-5"></overview>
     </div>
   </div>
 </template>
@@ -19,6 +24,9 @@ import useStore from '@/stores'
 import FoldTree from '@/components/FoldTree/index.vue'
 import { Source } from '@/enmus/common'
 import Overview from '@/views/application/components/overview.vue'
+import Bread from '@/components/folderbread/index.vue'
+import TopSearch from '@/components/top-search/index.vue'
+
 defineOptions({
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Application',
@@ -41,4 +49,9 @@ const getTreeData = async () => {
 onMounted(() => {
   getTreeData()
 })
+
+const childrenData = ref<any>()
+const setNextChildrenFold = (data: any) => {
+  childrenData.value = data.children
+}
 </script>

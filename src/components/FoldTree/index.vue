@@ -8,8 +8,11 @@
         :data="treeData"
         :props="defaultProps"
         @node-click="handleNodeClick"
-        default-expand-all="true"
         highlight-current
+        accordion
+        node-key="id"
+        :default-expanded-keys="[folder.currentFolder]"
+        :current-node-key="folder.currentFolder"
         class="p-2"
       >
         <template #default="{ node, data }">
@@ -69,6 +72,7 @@
 import { reactive, ref, watch } from 'vue'
 import { delFolder, postFolder } from '@/api/folder'
 import { MsgSuccess, MsgConfirm } from '@/utils/message'
+import useStore from '@/stores'
 defineOptions({
   name: 'FoldTree',
 })
@@ -83,15 +87,19 @@ const props = defineProps({
     required: true,
   },
 })
-const emit = defineEmits(['refresh'])
+const emit = defineEmits(['refresh', 'handlerClickCurNode'])
+const { folder } = useStore()
 interface Tree {
   id: string
   name: string
   children?: Tree[]
 }
-// const handleNodeClick = (data: Tree) => {
-//   console.log(data)
-// }
+//默认点击第一个节点
+// const defaultClickNode = ref<string>()
+const handleNodeClick = (data: Tree) => {
+  folder.setCurrentFolder(data.id)
+  emit('handlerClickCurNode', data)
+}
 
 const defaultProps = {
   id: 'id',
@@ -113,10 +121,8 @@ const handleDropdownClick = (node: any) => {
   console.log(1, node)
   if (node.level === 1) {
     parentid.value = 'default'
-    console.log(parentid.value)
   } else {
     parentid.value = node.data.id
-    console.log(parentid.value)
   }
 }
 const formRef = ref()

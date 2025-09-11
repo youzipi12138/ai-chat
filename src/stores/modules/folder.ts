@@ -3,7 +3,7 @@ import { getFolderList } from '@/api/folder'
 
 const useFolderStore = defineStore('folder', {
   state: () => ({
-    currentFolder: {} as any,
+    currentFolder: 'default',
   }),
   actions: {
     setCurrentFolder(folder: any) {
