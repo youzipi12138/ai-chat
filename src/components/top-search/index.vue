@@ -8,17 +8,14 @@
     >
       <template #prepend>
         <el-select v-model="select" placeholder="名称" style="width: 90px">
-          <el-option
-            v-for="item in typeName"
-            :label="item.label"
-            :value="item.value"
-            :key="item.label"
-          />
+          <el-option label="创建者" value="1" />
+          <el-option label="名称" value="2" />
+          <el-option label="发布状态" value="3" />
         </el-select>
       </template>
     </el-input>
     <el-dropdown trigger="click">
-      <el-button type="primary"> chuanjia </el-button>
+      <el-button type="primary"> 创建 </el-button>
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>Action 1</el-dropdown-item>
@@ -36,12 +33,7 @@ import { ref } from 'vue'
 defineOptions({
   name: 'TopSearch',
 })
-const props = defineProps({
-  typeName: {
-    type: Array,
-    default: () => [],
-  },
-})
+const props = defineProps({})
 const input = ref('')
 const select = ref('')
 </script>

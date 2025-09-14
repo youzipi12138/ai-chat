@@ -13,7 +13,7 @@
     <div class="logout flex-1 bg-[#f5f6f7] items-center">
       <div class="flex h-[60px] justify-between items-center">
         <Bread :FoldList="treeData" @clickBreadcrumb="handleClickBreadcrumb"></Bread>
-        <TopSearch></TopSearch>
+        <TopSearch :typeName="typeName"></TopSearch>
       </div>
       <overview :data="overviewData" @clickCard="handleClickCard" class="p-5"></overview>
     </div>
@@ -67,4 +67,6 @@ const handleClickCard = (item: Tree) => {
   console.log(item)
   FoldTreeRef.value.triggerClick(item.id)
 }
+
+//搜索栏
 </script>
