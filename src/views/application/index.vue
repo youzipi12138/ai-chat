@@ -2,6 +2,17 @@
   <div class="flex w-full">
     <div class="sidenav w-[240px] bg-[#f5f6f7] h-full border-r-[#dcdfe6] border-r-1">
       <div class="text-[16px] font-bold pl-4 pt-4">应用</div>
+      <!-- <content-loader
+        v-if="shouldRenderSkeleton"
+        viewBox="0 0 223.2 265"
+        :speed="2"
+        primaryColor="#e6e7e8"
+        secondaryColor="#f0f1f2"
+      >
+        <rect x="10" y="10" rx="5" ry="5" width="200" height="40" />
+        <rect x="40" y="60" rx="5" ry="5" width="170" height="40" />
+        <rect x="40" y="110" rx="5" ry="5" width="170" height="40" />
+      </content-loader> -->
       <FoldTree
         ref="FoldTreeRef"
         :tree-data="treeData"
@@ -27,7 +38,8 @@ import { Source } from '@/enmus/common'
 import Overview from '@/views/application/components/overview.vue'
 import Bread from '@/components/folderbread/index.vue'
 import TopSearch from '@/components/top-search/index.vue'
-
+import { useSmartSkeleton } from '@/useHook/useSmartSkeletonHook'
+import { ContentLoader } from 'vue-content-loader'
 defineOptions({
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Application',
@@ -38,14 +50,21 @@ interface Tree {
   children?: Tree[]
 }
 const treeData = ref<Tree[]>()
-const loading = ref(false)
+const loading = ref(true)
+
+// 调用智能骨架屏控制函数
+const { shouldRenderSkeleton } = useSmartSkeleton(loading, {
+  delay: 150, // 150ms 后再显示骨架屏
+  minDisplayTime: 300, // 骨架屏至少显示 200ms
+})
 
 const getTreeData = async () => {
   const { folder } = useStore()
-  const { data } = (await folder.asyncGetFolder(Source.APPLICATION, {}, loading)) as {
+  const { data } = (await folder.asyncGetFolder(Source.APPLICATION, {})) as {
     data: Tree[]
   }
   treeData.value = data as Tree[]
+  loading.value = false
 }
 onMounted(() => {
   getTreeData()

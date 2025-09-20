@@ -4,6 +4,7 @@
     <el-input prefix-icon="Search" placeholder="请输入" clearable class=""></el-input>
     <el-scrollbar>
       <el-tree
+        empty-text=""
         ref="treeRef"
         style="max-width: 600px"
         :data="treeData"
@@ -43,6 +44,18 @@
             </template>
           </el-dropdown>
         </template>
+        <!-- <template #empty>
+          <content-loader
+            viewBox="0 0 223.2 265"
+            :speed="2"
+            primaryColor="#e6e7e8"
+            secondaryColor="#f0f1f2"
+          >
+            <rect x="10" y="10" rx="5" ry="5" width="200" height="40" />
+            <rect x="40" y="60" rx="5" ry="5" width="170" height="40" />
+            <rect x="40" y="110" rx="5" ry="5" width="170" height="40" />
+          </content-loader>
+        </template> -->
       </el-tree>
     </el-scrollbar>
   </div>
@@ -74,6 +87,7 @@ import { reactive, ref, watch } from 'vue'
 import { delFolder, postFolder } from '@/api/folder'
 import { MsgSuccess, MsgConfirm } from '@/utils/message'
 import useStore from '@/stores'
+import { ContentLoader } from 'vue-content-loader'
 defineOptions({
   name: 'FoldTree',
 })

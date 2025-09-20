@@ -18,11 +18,10 @@
       <el-button type="primary"> 创建 </el-button>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>Action 1</el-dropdown-item>
-          <el-dropdown-item>Action 2</el-dropdown-item>
-          <el-dropdown-item>Action 3</el-dropdown-item>
-          <el-dropdown-item disabled>Action 4</el-dropdown-item>
-          <el-dropdown-item divided>Action 5</el-dropdown-item>
+          <el-dropdown-item>简单应用</el-dropdown-item>
+          <el-dropdown-item>高级编排</el-dropdown-item>
+          <el-dropdown-item>导入创建</el-dropdown-item>
+          <el-dropdown-item>添加文件夹</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
