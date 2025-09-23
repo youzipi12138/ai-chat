@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { type Ref } from 'vue'
 import userApi from '@/api/user/user'
+import type { User } from '@/api/type/user'
 
 export interface userStateTypes {
   userInfo: User | null

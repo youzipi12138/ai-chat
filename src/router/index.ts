@@ -13,7 +13,8 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routers as RouteRecordRaw[],
 })
-//前置路由
+NProgress.configure({ showSpinner: false, speed: 500, minimum: 0.3 })
+//前置路由  Vue Router 的路由守卫有严格规则：一个守卫函数中，next() 只能被调用一次。
 
 router.beforeEach(
   async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
@@ -22,17 +23,38 @@ router.beforeEach(
       next()
       return
     }
+    const notAuthRouteNameList = ['login', 'ForgotPassword', 'ResetPassword', 'Chat', 'UserLogin']
     const { login, user } = useStore()
-    if (!login.getToken() && to.path !== '/login') {
-      next({
-        path: '/login',
-      })
+
+    // 不在白名单里的
+    if (!notAuthRouteNameList.includes(to.name ? to.name.toString() : '')) {
+      const token = login.getToken()
+      if (!token) {
+        next({
+          path: '/login',
+        })
+        return
+      }
+      if (!user.userInfo) {
+        await user.profile()
+      }
+      next()
       return
     }
-    if (login.getToken()) {
-      await user.profile()
-    }
+    //在白名单里直接放行
     next()
+
+    // const { login, user } = useStore()
+    // if (!login.getToken() && to.path !== '/login') {
+    //   next({
+    //     path: '/login',
+    //   })
+    //   return
+    // }
+    // if (login.getToken()) {
+    //   await user.profile()
+    // }
+    // next()
   },
 )
 router.afterEach(() => {

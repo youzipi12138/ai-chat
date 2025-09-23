@@ -3,13 +3,12 @@ import { MsgError } from '@/utils/message'
 import type { NProgress } from 'nprogress'
 import type { Ref } from 'vue'
 import type { Result } from '@/request/Result'
-// import useStore from '@/stores'
+import useStore from '@/stores'
 import router from '@/router'
-
 import { ref, type WritableComputedRef } from 'vue'
 
 const axiosConfig = {
-  baseURL: 'http://localhost:5173/admin/api',
+  baseURL: 'http://localhost:5174/admin/api',
   withCredentials: false,
   timeout: 600000,
   headers: {},
@@ -27,8 +26,8 @@ instance.interceptors.request.use(
     // const token = login.getToken()
 
     // const language = user.getLanguage()
-
-    const token = localStorage.getItem('token')
+    const { login } = useStore()
+    const token = login.getToken()
     const language = localStorage.getItem('MaxKB-locale')
 
     config.headers['Accept-Language'] = `${language}`
@@ -79,6 +78,7 @@ instance.interceptors.response.use(
         !err.response.config.url.includes('chat/open') &&
         !err.response.config.url.includes('application/profile')
       ) {
+        localStorage.removeItem('token')
         router.push({ name: 'login' })
       }
     }

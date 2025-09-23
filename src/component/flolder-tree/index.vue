@@ -98,7 +98,7 @@ const formData = reactive({
 const rule = reactive({
   name: [
     {
-      required: 'true',
+      required: true,
       message: '请输入文件夹名称',
       trigger: 'blur',
     },

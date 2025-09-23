@@ -12,11 +12,11 @@
         <el-input v-model="form.username" autocomplete="off" />
       </el-form-item>
       <el-form-item label="" prop="password">
-        <el-input v-model="form.password" autocomplete="off" type="password" show-password />
+        <el-input v-model="form.password" autocomplete="true" type="password" show-password />
       </el-form-item>
       <el-form-item label="" prop="captcha">
         <div class="flex">
-          <el-input v-model="form.captcha" autocomplete="off" class="w-4/6" />
+          <el-input v-model="form.captcha" autocomplete="true" class="w-4/6" />
           <el-image
             :src="captchaUrl"
             @click="getCaptchaUrl"
@@ -77,7 +77,7 @@ function submitForm() {
       try {
         await login.asyncLogin(form.value)
         localStorage.setItem('workspace_id', 'default')
-        router.push({ name: 'application' })
+        router.replace({ name: 'application' })
       } catch (error) {
         console.log('登录失败', error)
       }
