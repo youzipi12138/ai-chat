@@ -6,17 +6,18 @@
       ref="formRef"
       @keyup.enter="submitForm"
       class="demo-ruleForm p-10 border border-solid border-gray-300 rounded-md"
+      autocomplete="on"
     >
       <div class="mb-4">普通登录</div>
       <el-form-item label="" prop="username">
-        <el-input v-model="form.username" autocomplete="off" />
+        <el-input v-model="form.username" placeholder="请输入账号" />
       </el-form-item>
       <el-form-item label="" prop="password">
-        <el-input v-model="form.password" autocomplete="true" type="password" show-password />
+        <el-input v-model="form.password" type="password" show-password placeholder="请输入密码" />
       </el-form-item>
       <el-form-item label="" prop="captcha">
         <div class="flex">
-          <el-input v-model="form.captcha" autocomplete="true" class="w-4/6" />
+          <el-input v-model="form.captcha" class="w-4/6" />
           <el-image
             :src="captchaUrl"
             @click="getCaptchaUrl"

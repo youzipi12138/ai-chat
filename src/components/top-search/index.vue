@@ -21,7 +21,7 @@
           <el-dropdown-item @click="dialogVisible = true">简单应用</el-dropdown-item>
           <el-dropdown-item>高级编排</el-dropdown-item>
           <el-dropdown-item>导入创建</el-dropdown-item>
-          <el-dropdown-item>添加文件夹</el-dropdown-item>
+          <el-dropdown-item @click="createFolder">添加文件夹</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -58,12 +58,17 @@
 import type { FormInstance } from 'element-plus'
 import { reactive, ref } from 'vue'
 import { ApplicationFormType } from '@/api/type/application'
+import bus from '@/utils/bus'
 defineOptions({
   name: 'TopSearch',
 })
 const props = defineProps({})
 const input = ref('')
 const select = ref('')
+
+function createFolder() {
+  bus.emit('CreateFolder')
+}
 
 const dialogVisible = ref(false)
 const applicationForm = ref<ApplicationFormType>({

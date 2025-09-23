@@ -24,7 +24,7 @@
     <div class="logout flex-1 bg-[#f5f6f7] items-center">
       <div class="flex h-[60px] justify-between items-center">
         <Bread :FoldList="treeData" @clickBreadcrumb="handleClickBreadcrumb"></Bread>
-        <TopSearch :typeName="typeName"></TopSearch>
+        <TopSearch></TopSearch>
       </div>
       <overview :data="overviewData" @clickCard="handleClickCard" class="p-5"></overview>
     </div>

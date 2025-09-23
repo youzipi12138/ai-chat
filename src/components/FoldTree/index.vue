@@ -88,6 +88,7 @@ import { delFolder, postFolder } from '@/api/folder'
 import { MsgSuccess, MsgConfirm } from '@/utils/message'
 import useStore from '@/stores'
 import { ContentLoader } from 'vue-content-loader'
+import bus from '@/utils/bus'
 defineOptions({
   name: 'FoldTree',
 })
@@ -142,6 +143,7 @@ const handleDropdownClick = (node: any) => {
   }
 }
 const formRef = ref()
+bus.on('CreateFolder', () => (dialogVisible.value = true))
 //添加文件夹
 const onConfirm = async () => {
   await formRef.value.validate((valid: boolean) => {
