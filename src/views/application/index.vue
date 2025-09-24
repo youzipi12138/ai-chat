@@ -49,7 +49,7 @@ interface Tree {
   name: string
   children?: Tree[]
 }
-const treeData = ref<Tree[]>()
+const treeData = ref<Tree>()
 const loading = ref(true)
 
 // 调用智能骨架屏控制函数
@@ -58,20 +58,25 @@ const { shouldRenderSkeleton } = useSmartSkeleton(loading, {
   minDisplayTime: 300, // 骨架屏至少显示 200ms
 })
 
+// overview的数据设置
+const overviewData = ref<any>()
+
 const getTreeData = async () => {
   const { folder } = useStore()
   const { data } = (await folder.asyncGetFolder(Source.APPLICATION, {})) as {
-    data: Tree[]
+    data: Tree
   }
-  treeData.value = data as Tree[]
+  treeData.value = data as Tree
   loading.value = false
+  overviewData.value = data
+  console.log(2, data)
 }
 onMounted(() => {
   getTreeData()
 })
-// overview的数据设置
-const overviewData = ref<any>()
+
 const setNextChildrenFold = (data: any) => {
+  console.log(1, data.children)
   overviewData.value = data.children
 }
 

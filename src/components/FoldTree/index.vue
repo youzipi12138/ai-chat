@@ -83,7 +83,7 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { delFolder, postFolder } from '@/api/folder'
 import { MsgSuccess, MsgConfirm } from '@/utils/message'
 import useStore from '@/stores'
