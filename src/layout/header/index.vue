@@ -17,17 +17,44 @@
         <div class="ava w-10 h-10">
           <img src="@/assets/ava.JPG" alt="" class="rounded-full" />
         </div>
-        <div>admin</div>
+        <el-dropdown trigger="click" class="cursor-pointer">
+          <span class="el-dropdown-link">
+            admin
+            <el-icon class="el-icon--right">
+              <arrow-down />
+            </el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>Action 1</el-dropdown-item>
+              <el-dropdown-item>Action 2</el-dropdown-item>
+              <el-dropdown-item @click.stop="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </header>
   </div>
 </template>
 <script setup lang="ts">
 import { defineOptions } from 'vue'
+import useStore from '@/stores'
+import { useRouter } from 'vue-router'
 
 defineOptions({
   name: 'NavHeader',
 })
+const { login } = useStore()
+const router = useRouter()
+
+async function logout() {
+  try {
+    await login.asyncLogout() //成功之后跳转login页面
+    router.push({ name: 'login' })
+  } catch (error) {
+    console.log('登出失败', error)
+  }
+}
 </script>
 <style lang="scss" scoped>
 header {

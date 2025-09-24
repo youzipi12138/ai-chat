@@ -23,3 +23,11 @@ export const login: (data: loginData, loading?: Ref<boolean>) => Promise<Result<
 export const getCaptcha: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get('/user/captcha', undefined, loading)
 }
+/**
+ * 登出
+ * @param loading 接口加载器
+ * @returns
+ */
+export const logout: (loading?: Ref<boolean>) => Promise<Result<boolean>> = (loading) => {
+  return post('/user/logout', undefined, undefined, loading)
+}

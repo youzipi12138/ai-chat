@@ -56,7 +56,7 @@
 </template>
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { ApplicationFormType } from '@/api/type/application'
 import bus from '@/utils/bus'
 defineOptions({
@@ -71,6 +71,99 @@ function createFolder() {
 }
 
 const dialogVisible = ref(false)
+watch(dialogVisible, (bool) => {
+  //关闭modal时
+  if (!bool) {
+    applicationForm.value = {
+      // 应用名称
+      name: '',
+
+      // 应用描述
+      desc: '',
+
+      // 使用的模型 ID（关联模型）
+      model_id: undefined,
+
+      // 对话轮数，表示用户和应用的交互轮数
+      dialogue_number: 1,
+
+      // 应用开场白 / 问候语（prologue）
+      prologue:
+        '您好，我是 XXX 小助手，您可以向我提出 XXX 使用问题。\n- XXX 主要功能有什么？\n- XXX 如何收费？\n- 需要转人工服务',
+
+      // 关联知识库 ID 列表
+      knowledge_id_list: [],
+
+      // 知识库相关配置
+      knowledge_setting: {
+        // 返回最相关的 top_n 条结果
+        top_n: 3,
+
+        // 相似度阈值，用于过滤相似度低的知识
+        similarity: 0.6,
+
+        // 单段落最大字符数，超过截断
+        max_paragraph_char_number: 5000,
+
+        // 搜索模式，如 embedding 或 keyword
+        search_mode: 'embedding',
+
+        // 没有引用文档时的处理配置
+        no_references_setting: {
+          // 状态，可选 'ai_questioning' 等
+          status: 'ai_questioning',
+
+          // 占位符，用于后续动态替换用户问题
+          value: '{question}',
+        },
+      },
+
+      // AI 模型相关配置
+      model_setting: {
+        // 模型 prompt 模板
+        prompt: `已知信息：{data}
+用户问题：{question}
+回答要求：
+- 请使用中文回答用户问题`,
+
+        // 系统角色描述
+        system: '你是 xxx 小助手',
+
+        // 当没有引用文档时使用的 prompt
+        no_references_prompt: '{question}',
+      },
+
+      // 模型其他参数配置
+      model_params_setting: {},
+
+      // 是否启用问题优化（对用户问题进行优化、改写）
+      problem_optimization: false,
+
+      // 问题优化的提示模板
+      problem_optimization_prompt:
+        '()里面是用户问题,根据上下文回答揣测用户问题({question}) 要求: 输出一个补全问题,并且放在<data></data>标签中',
+
+      // 语音识别模型 ID
+      stt_model_id: undefined,
+
+      // 语音合成模型 ID
+      tts_model_id: undefined,
+
+      // 是否启用语音识别
+      stt_model_enable: false,
+
+      // 是否启用语音合成
+      tts_model_enable: false,
+
+      // TTS 类型（BROWSER 表示浏览器播放）
+      tts_type: 'BROWSER',
+
+      // 应用类型，可选 SIMPLE / ADVANCED 等
+      type: 'SIMPLE',
+    }
+    formRef.value.clearValidate()
+  }
+})
 const applicationForm = ref<ApplicationFormType>({
   // 应用名称
   name: '',
